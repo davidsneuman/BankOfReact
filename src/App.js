@@ -6,6 +6,7 @@ It contains the top-level state.
 ==================================================*/
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import axios from 'axios';
 
 // Import other components
 import Home from './components/Home';
@@ -18,7 +19,8 @@ class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
     this.state = {
-      accountBalance: 1234567.89,
+      accountBalance: 123.4,
+      creditList: [],
       debitList: [],
       currentUser: {
         userName: 'Joe Smith',
@@ -34,6 +36,16 @@ class App extends Component {
     this.setState({currentUser: newUser})
   }
 
+  addCredits = () => {
+    
+    
+    var sumCredits = 0;
+    this.state.creditList.forEach((credit) => sumCredits += credit.amount)
+    console.log(sumCredits)
+    this.setState({accountBalance: this.state.accountBalance + sumCredits})
+    // return 0;
+  }
+
   // Create Routes and React elements to be rendered using React components
   render() {  
     // Create React elements and pass input props to components
@@ -42,6 +54,7 @@ class App extends Component {
       <UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince} />
     );
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
+    const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} debits={this.state.debitList}/>)
     const DebitsComponent = () => (<Debits debits={this.state.debitList} />) 
 
     // Important: Include the "basename" in Router, which is needed for deploying the React app to GitHub Pages
@@ -51,12 +64,33 @@ class App extends Component {
           <Route exact path="/" render={HomeComponent}/>
           <Route exact path="/userProfile" render={UserProfileComponent}/>
           <Route exact path="/login" render={LogInComponent}/>
-          <Route exact path="/credits" render={Credits}/>
+          <Route exact path="/credits" render={CreditsComponent}/>
           <Route exact path="/debits" render={DebitsComponent}/>
         </div>
       </Router>
     );
   }
+
+        // Make async API call to retrieve data from remote website
+        async componentDidMount() {
+            let creditEndpoint = 'https://moj-api.herokuapp.com/credits';  // Link to remote website API endpoint
+        
+            // Await for promise (completion) returned from API call
+            try {  // Accept success response as array of JSON objects (users)
+              let response = await axios.get(creditEndpoint);
+              // To get data object in the response, need to use "response.data"
+              this.setState({creditList: response.data});  // Store received data in state's "users" object
+            //   this.setState({accountBalance: this.accountBalance})
+                this.addCredits();
+            } 
+            catch (error) {  // Print out errors at console when there is an error response
+              if (error.response) {
+                // The request was made, and the server responded with error message and status code.
+                console.log(error.response.data);  // Print out error message (e.g., Not Found)
+                console.log(error.response.status);  // Print out error status code (e.g., 404)
+              }    
+            }
+          }  
 }
 
 export default App;
