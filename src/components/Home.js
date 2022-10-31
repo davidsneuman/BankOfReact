@@ -23,7 +23,7 @@ class Home extends Component {
         <br/>
         <Link to="/debits">Debits (to be implemented in the Assignment)</Link>
         <br/><br/>
-        <AccountBalance accountBalance={this.props.accountBalance}/>
+        <AccountBalance accountBalance={this.props.accountBalance.toFixed(2)}/>
       </div>
     );
   }

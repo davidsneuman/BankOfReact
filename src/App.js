@@ -19,7 +19,7 @@ class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
     this.state = {
-      accountBalance: 123.4,
+      accountBalance: 0,
       creditList: [],
       debitList: [],
       uniqueId: 0,
@@ -49,7 +49,7 @@ class App extends Component {
     const newAccountBalance = this.state.accountBalance + newCreditInfo.amount
     this.setState({credits: newCreditList})
     this.setState({accountBalance: newAccountBalance})
-    this.setState({uniqueId: this.uniqueId + 1})    
+    this.setState({uniqueId: this.state.uniqueId + 1})    
 
   }
 

@@ -46,7 +46,7 @@ class Credits extends Component {
         return (
             <div>
               <h1>Credits</h1>
-              <AccountBalance accountBalance={this.props.accountBalance}/>
+              <AccountBalance accountBalance={this.props.accountBalance.toFixed(2)}/>
 
               <div id="credits">
                 {
@@ -60,7 +60,7 @@ class Credits extends Component {
                 }
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" name="description" onChange={this.handleDescriptionChange}/>
-                    <input type="number" name="amount" onChange={this.handleAmountChange}/>
+                    <input type="number" step="0.01"name="amount" onChange={this.handleAmountChange}/>
                     <button type="submit">Add Credit</button>
                 </form>
             </div>
