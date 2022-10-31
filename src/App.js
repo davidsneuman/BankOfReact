@@ -22,7 +22,7 @@ class App extends Component {
       accountBalance: 0,
       creditList: [],
       debitList: [],
-      uniqueId: 0,
+      uniqueId: 0, //required for duplicate entries in credit/debit
       currentUser: {
         userName: 'Joe Smith',
         memberSince: '11/22/99',
@@ -37,6 +37,7 @@ class App extends Component {
     this.setState({currentUser: newUser})
   }
 
+  // add a new credit entry
   addCreditInfo = (creditInfo) => {
     const newCreditInfo = {
         amount: parseFloat(creditInfo.amount),
@@ -53,11 +54,11 @@ class App extends Component {
 
   }
 
+  // sum total credits
   addCredits = () => {
     var sumCredits = 0;
     this.state.creditList.forEach((credit) => sumCredits += credit.amount)
     this.setState({accountBalance: this.state.accountBalance + sumCredits})
-    // return 0;
   }
 
   // Create Routes and React elements to be rendered using React components
