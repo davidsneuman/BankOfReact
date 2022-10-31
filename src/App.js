@@ -51,16 +51,37 @@ class App extends Component {
     this.setState({credits: newCreditList})
     this.setState({accountBalance: newAccountBalance})
     this.setState({uniqueId: this.state.uniqueId + 1})    
-
   }
+
+    // add a new credit entry
+    addDebitInfo = (debitInfo) => {
+        const newDebitInfo = {
+            amount: parseFloat(debitInfo.amount),
+            date: new Date().toDateString(),
+            description: debitInfo.description,
+            id: this.state.uniqueId
+        }
+        var newdebitList = this.state.debitList
+        newdebitList.push(newDebitInfo)
+        const newAccountBalance = this.state.accountBalance - newDebitInfo.amount
+        this.setState({debits: newdebitList})
+        this.setState({accountBalance: newAccountBalance})
+        this.setState({uniqueId: this.state.uniqueId + 1})    
+      }
 
   // sum credits
   addCredits = () => {
     var sumCredits = 0;
     this.state.creditList.forEach((credit) => sumCredits += credit.amount)
     this.setState({accountBalance: this.state.accountBalance + sumCredits})
-    // return 0;
   }
+
+    // sum debits
+    addDebits = () => {
+        var sumDebits = 0;
+        this.state.debitList.forEach((debit) => sumDebits += debit.amount)
+        this.setState({accountBalance: this.state.accountBalance - sumDebits})
+      }
 
   // Create Routes and React elements to be rendered using React components
   render() {  
@@ -71,7 +92,7 @@ class App extends Component {
     );
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
     const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} addCreditInfo={this.addCreditInfo}/>)
-    const DebitsComponent = () => (<Debits debits={this.state.debitList} />) 
+    const DebitsComponent = () => (<Debits debits={this.state.debitList} accountBalance={this.state.accountBalance} addDebitInfo={this.addDebitInfo}/>) 
 
     // Important: Include the "basename" in Router, which is needed for deploying the React app to GitHub Pages
     return (
@@ -89,15 +110,15 @@ class App extends Component {
 
         // Make async API call to retrieve data from remote website
         async componentDidMount() {
+            //CREDIT API CALL
             let creditEndpoint = 'https://moj-api.herokuapp.com/credits';  // Link to remote website API endpoint
         
             // Await for promise (completion) returned from API call
-            try {  // Accept success response as array of JSON objects (users)
-              let response = await axios.get(creditEndpoint);
-              // To get data object in the response, need to use "response.data"
-              this.setState({creditList: response.data});  // Store received data in state's "users" object
-            //   this.setState({accountBalance: this.accountBalance})
-                this.addCredits();
+            try {  // Accept success response as array of JSON objects
+                let response = await axios.get(creditEndpoint);
+                // To get data object in the response, need to use "response.data"
+                this.setState({creditList: response.data}); 
+                this.addCredits(); 
             } 
             catch (error) {  // Print out errors at console when there is an error response
               if (error.response) {
@@ -106,6 +127,26 @@ class App extends Component {
                 console.log(error.response.status);  // Print out error status code (e.g., 404)
               }    
             }
+
+
+            //DEBIT API CALL
+            let debitEndpoint = 'https://moj-api.herokuapp.com/debits';  // Link to remote website API endpoint
+        
+            // Await for promise (completion) returned from API call
+            try {  // Accept success response as array of JSON objects
+                let response = await axios.get(debitEndpoint);
+                // To get data object in the response, need to use "response.data"
+                this.setState({debitList: response.data}); 
+                this.addDebits();
+            } 
+            catch (error) {  // Print out errors at console when there is an error response
+              if (error.response) {
+                // The request was made, and the server responded with error message and status code.
+                console.log(error.response.data);  // Print out error message (e.g., Not Found)
+                console.log(error.response.status);  // Print out error status code (e.g., 404)
+              }    
+            }
+
           }  
 }
 
