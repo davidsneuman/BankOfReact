@@ -54,11 +54,12 @@ class App extends Component {
 
   }
 
-  // sum total credits
+  // sum credits
   addCredits = () => {
     var sumCredits = 0;
     this.state.creditList.forEach((credit) => sumCredits += credit.amount)
     this.setState({accountBalance: this.state.accountBalance + sumCredits})
+    // return 0;
   }
 
   // Create Routes and React elements to be rendered using React components

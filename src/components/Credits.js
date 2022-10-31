@@ -26,7 +26,6 @@ class Credits extends Component {
         const updatedCreditInput = {...this.state.creditInput}
         updatedCreditInput.description = e.target.value
         this.setState({creditInput: updatedCreditInput})
-        console.log(this.state.creditInput)
     }
 
     // update amount field
@@ -34,7 +33,6 @@ class Credits extends Component {
         const updatedCreditInput = {...this.state.creditInput}  
         updatedCreditInput.amount = e.target.value 
         this.setState({creditInput: updatedCreditInput}) 
-        console.log(this.state.creditInput)
     }
 
     handleSubmit = (creditInfo) => {
@@ -70,8 +68,5 @@ class Credits extends Component {
             </div>
           )
     }
-
-
 }
-
 export default Credits;
