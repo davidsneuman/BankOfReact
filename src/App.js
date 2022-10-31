@@ -22,6 +22,7 @@ class App extends Component {
       accountBalance: 123.4,
       creditList: [],
       debitList: [],
+      uniqueId: 0,
       currentUser: {
         userName: 'Joe Smith',
         memberSince: '11/22/99',
@@ -36,12 +37,26 @@ class App extends Component {
     this.setState({currentUser: newUser})
   }
 
+  addCreditInfo = (creditInfo) => {
+    const newCreditInfo = {
+        amount: parseFloat(creditInfo.amount),
+        date: new Date().toDateString(),
+        description: creditInfo.description,
+        id: this.state.uniqueId
+    }
+    var newCreditList = this.state.creditList
+    newCreditList.push(newCreditInfo)
+    const newAccountBalance = this.state.accountBalance + newCreditInfo.amount
+    this.setState({credits: newCreditList})
+    this.setState({accountBalance: newAccountBalance})
+    this.setState({uniqueId: this.uniqueId + 1})    
+    console.log(typeof newCreditInfo.amount)
+    
+  }
+
   addCredits = () => {
-    
-    
     var sumCredits = 0;
     this.state.creditList.forEach((credit) => sumCredits += credit.amount)
-    console.log(sumCredits)
     this.setState({accountBalance: this.state.accountBalance + sumCredits})
     // return 0;
   }
@@ -54,7 +69,7 @@ class App extends Component {
       <UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince} />
     );
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
-    const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} debits={this.state.debitList}/>)
+    const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} debits={this.state.debitList} addCreditInfo={this.addCreditInfo}/>)
     const DebitsComponent = () => (<Debits debits={this.state.debitList} />) 
 
     // Important: Include the "basename" in Router, which is needed for deploying the React app to GitHub Pages
