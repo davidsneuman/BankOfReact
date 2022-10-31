@@ -50,8 +50,7 @@ class App extends Component {
     this.setState({credits: newCreditList})
     this.setState({accountBalance: newAccountBalance})
     this.setState({uniqueId: this.uniqueId + 1})    
-    console.log(typeof newCreditInfo.amount)
-    
+
   }
 
   addCredits = () => {
@@ -69,7 +68,7 @@ class App extends Component {
       <UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince} />
     );
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
-    const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} debits={this.state.debitList} addCreditInfo={this.addCreditInfo}/>)
+    const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} addCreditInfo={this.addCreditInfo}/>)
     const DebitsComponent = () => (<Debits debits={this.state.debitList} />) 
 
     // Important: Include the "basename" in Router, which is needed for deploying the React app to GitHub Pages

@@ -14,7 +14,6 @@ class Credits extends Component {
         this.state = {
           accountBalance: this.props.accountBalance,
           credits: this.props.credits,
-          debits: this.props.debits,
           creditInput: {
             description: '',
             amount: 0
