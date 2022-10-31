@@ -43,8 +43,7 @@ class Debits extends Component {
     render() {
         return (
             <div>
-              <h1>Debits</h1>
-              <AccountBalance accountBalance={this.props.accountBalance.toFixed(2)}/>
+              <h1 className='App-header'>Debits</h1>
 
               <div id="debits">
                 {
@@ -52,18 +51,25 @@ class Debits extends Component {
                     this.state.debits.map( (debit) => { 
                         let date = debit.date.slice(0,10);  
                         return (
-                            <li key={debit.id}>{debit.amount} {debit.description} {date}</li>
+                            <li key={debit.id}>${debit.amount} {debit.description} {date}</li>
                         )
                         }
                     )
                 }
+                <br/>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" name="description" onChange={this.handleDescriptionChange}/>
                     <input type="number" step="0.01"name="amount" onChange={this.handleAmountChange}/>
                     <button type="submit">Add Debit</button>
                 </form>
+                <br/>
+                <div className='App-header'>
+                    <AccountBalance accountBalance={this.props.accountBalance.toFixed(2)}/>
+                </div>
+                <br/>
             </div>
             <br/>
+            
               <Link to="/">Return to Home</Link>
             </div>
           )
