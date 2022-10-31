@@ -39,9 +39,11 @@ class App extends Component {
 
   // add a new credit entry
   addCreditInfo = (creditInfo) => {
+    let today = new Date()
+    let date = today.getFullYear() + '-' + parseInt(today.getMonth() + 1) + '-' + today.getDate() 
     const newCreditInfo = {
         amount: parseFloat(creditInfo.amount),
-        date: new Date().toDateString(),
+        date: date,
         description: creditInfo.description,
         id: this.state.uniqueId
     }
@@ -55,9 +57,11 @@ class App extends Component {
 
     // add a new credit entry
     addDebitInfo = (debitInfo) => {
+        let today = new Date()
+        let date = today.getFullYear() + '-' + parseInt(today.getMonth() + 1) + '-' + today.getDate() 
         const newDebitInfo = {
             amount: parseFloat(debitInfo.amount),
-            date: new Date().toDateString(),
+            date: date,
             description: debitInfo.description,
             id: this.state.uniqueId
         }

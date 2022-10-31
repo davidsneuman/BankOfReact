@@ -43,27 +43,32 @@ class Credits extends Component {
     render() {
         return (
             <div>
-              <h1>Credits</h1>
-              <AccountBalance accountBalance={this.props.accountBalance.toFixed(2)}/>
-
+              <h1 className='App-header'>Credits</h1>
+              
               <div id="credits">
                 {
                     // extract data from JSON
                     this.state.credits.map( (credit) => { 
                         let date = credit.date.slice(0,10);  
                         return (
-                            <li key={credit.id}>{credit.amount} {credit.description} {date}</li>
+                            <li className='list-item' key={credit.id}>${credit.amount} {credit.description} {date}</li>
                         )
                         }
                     )
                 }
+                <br/>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" name="description" onChange={this.handleDescriptionChange}/>
                     <input type="number" step="0.01"name="amount" onChange={this.handleAmountChange}/>
                     <button type="submit">Add Credit</button>
                 </form>
+                <br/>
+                <div className='App-header'>
+                    <AccountBalance accountBalance={this.props.accountBalance.toFixed(2)}/>
+                </div>
             </div>
             <br/>
+            
               <Link to="/">Return to Home</Link>
             </div>
           )
