@@ -5,32 +5,68 @@ The Debits component contains information for Debits page view.
 Note: You need to work on this file for the Assignment.
 ==================================================*/
 import {Link} from 'react-router-dom';
+import { Component } from 'react';
+import AccountBalance from './AccountBalance';
 
-const Debits = (props) => {
-  // Create the list of Debit items
-  let debitsView = () => {
-    const { debits } = props;
-    return debits.map((debit) => {  // Extract "id", "amount", "description" and "date" properties of each debits JSON array element
-      let date = debit.date.slice(0,10);
-      return <li key={debit.id}>{debit.amount} {debit.description} {date}</li>
-    }) 
-  }
-  // Render the list of Debit items and a form to input new Debit item
-  return (
-    <div>
-      <h1>Debits</h1>
+class Debits extends Component {
+    constructor (props) {  // Create and initialize state
+        super(props)
+        this.state = {
+          accountBalance: this.props.accountBalance,
+          debits: this.props.debits,
+          debitInput: {
+            description: '',
+            amount: 0
+          }
+        }
+      }
 
-      {debitsView()}
+    // update description field
+    handleDescriptionChange = (e) => {
+        const updatedDebitInput = {...this.state.debitInput}
+        updatedDebitInput.description = e.target.value
+        this.setState({debitInput: updatedDebitInput})
+    }
 
-      <form onSubmit={props.addDebit}>
-        <input type="text" name="description" />
-        <input type="number" name="amount" />
-        <button type="submit">Add Debit</button>
-      </form>
-      <br/>
-      <Link to="/">Return to Home</Link>
-    </div>
-  )
+    // update amount field
+    handleAmountChange = (e) => {
+        const updatedDebitInput = {...this.state.debitInput}  
+        updatedDebitInput.amount = e.target.value 
+        this.setState({debitInput: updatedDebitInput}) 
+    }
+
+    handleSubmit = (debitInfo) => {
+        debitInfo.preventDefault()
+        this.props.addDebitInfo(this.state.debitInput)  // Update state in the top-level component (App.js)
+    }
+      
+    render() {
+        return (
+            <div>
+              <h1>Debits</h1>
+              <AccountBalance accountBalance={this.props.accountBalance.toFixed(2)}/>
+
+              <div id="debits">
+                {
+                    // extract data from JSON
+                    this.state.debits.map( (debit) => { 
+                        let date = debit.date.slice(0,10);  
+                        return (
+                            <li key={debit.id}>{debit.amount} {debit.description} {date}</li>
+                        )
+                        }
+                    )
+                }
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" name="description" onChange={this.handleDescriptionChange}/>
+                    <input type="number" step="0.01"name="amount" onChange={this.handleAmountChange}/>
+                    <button type="submit">Add Debit</button>
+                </form>
+            </div>
+            <br/>
+              <Link to="/">Return to Home</Link>
+            </div>
+          )
+    }
 }
-
 export default Debits;
